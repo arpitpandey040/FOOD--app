@@ -21,6 +21,7 @@ app.use(morgan("dev"));
 // routes
 app.use("/api/v1/test", require("./routes/testRoutes"));
 app.use("/api/v1/auth", require("./routes/authRoutes"));
+app.use("/api/v1/user", require("./routes/userRoute.js"));
 
 app.get("/", (req, res) => {
   console.log(`hi there`.bgCyan);
