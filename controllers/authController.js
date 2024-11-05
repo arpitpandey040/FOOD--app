@@ -1,12 +1,14 @@
 const userModel = require("../models/userModel");
 const bcrypt = require("bcryptjs");
 const colors = require("colors");
+const JWT = require("jsonwebtoken");
+
 // Register
 const registerController = async (req, res) => {
   try {
-    const { userName, email, password, phone, address } = req.body;
+    const { userName, email, password, phone, address, answer } = req.body;
 
-    if (!userName || !email || !password || !phone || !address) {
+    if (!userName || !email || !password || !phone || !address || !answer) {
       return res.status(500).send({
         success: false,
         message: "All fields are required",
@@ -33,6 +35,7 @@ const registerController = async (req, res) => {
       password: hashedPassword,
       phone,
       address,
+      answer,
     });
 
     return res.status(201).send({
@@ -79,9 +82,16 @@ const loginController = async (req, res) => {
         message: "Invalid password",
       });
     }
+    // token
+    const token = JWT.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
+
+    user.password = undefined;
     res.status(200).send({
       success: true,
       message: "User logged in successfully",
+      token,
       user,
     });
   } catch (error) {

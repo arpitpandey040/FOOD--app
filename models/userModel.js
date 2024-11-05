@@ -15,7 +15,6 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: [true, "Password is required"],
-      minlength: 8,
       select: false, // hide password in response
     },
     phone: {
@@ -35,6 +34,10 @@ const userSchema = new mongoose.Schema(
     profile: {
       type: String,
       default: "https://iconduck.com/icons/112808/user",
+    },
+    answer: {
+      type: String,
+      required: [true, "Please provide an answer"],
     },
   },
   { timestamps: true }
