@@ -140,9 +140,35 @@ const resetPasswordController = async (req, res) => {
     });
   }
 };
+
+// delete userAccount
+const deleteUserController = async (req, res) => {
+  try {
+    const user = await userModel.findByIdAndDelete({ _id: req.body.id });
+    if (!user) {
+      return res.status(404).send({
+        success: false,
+        message: "User not found",
+      });
+    }
+    res.status(200).send({
+      success: true,
+      message: "User deleted successfully.",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in delete user API",
+      error,
+    });
+  }
+};
+
 module.exports = {
   getUserController,
   updateUserController,
   updatePasswordController,
   resetPasswordController,
+  deleteUserController,
 };
